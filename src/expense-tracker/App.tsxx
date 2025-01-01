@@ -1,0 +1,52 @@
+// Code: Expense Tracker App
+// The Expense Tracker App is a simple application that allows users to add expenses and filter them by category. The app is built using React and TypeScript.
+// This is the main App component that renders the ExpenseForm, ExpenseFilter, and ExpenseList components. It also maintains the state of the expenses and
+// the selected category for filtering. In order to load the tracker, the file App.tsx in the src folder should be updated with the following code:
+//
+import { useState } from "react";
+import ExpenseList from "./expense-tracker/components/ExpenseList";
+import ExpenseFilter from "./expense-tracker/components/ExpenseFilter";
+import ExpenseForm from "./expense-tracker/components/ExpenseForm";
+
+function App() {
+  const [expenses, setExpense] = useState([
+    { id: 1, description: "aaa", amount: 15, category: "Utilities" },
+    { id: 2, description: "aaa", amount: 15, category: "Utilities" },
+    { id: 3, description: "ccc", amount: 50, category: "Groceries" },
+    { id: 4, description: "ddd", amount: 55, category: "Groceries" },
+    { id: 5, description: "ddd", amount: 55, category: "Entertainment" },
+    { id: 6, description: "ddd", amount: 55, category: "Entertainment" },
+  ]);
+
+  // ["Utilities", "Groceries", "Entertainment"]
+
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const visibleExpenses = selectedCategory ? expenses.filter((expns) => expns.category === selectedCategory) : expenses;
+
+  return (
+    expenses.length > 0 && (
+      <div>
+        <div className="mb-5">
+          <ExpenseForm
+            onSubmit={(expense_data) => setExpense([...expenses, { ...expense_data, id: expenses.length + 1 }])}
+          />
+        </div>
+
+        <div className="mb-3">
+          <ExpenseFilter
+            onSelectCategory={(cat) => {
+              setSelectedCategory(cat);
+            }}
+          />
+        </div>
+
+        <ExpenseList
+          expenses={visibleExpenses}
+          onDelete={(id) => setExpense(expenses.filter((expns) => expns.id != id))}
+        />
+      </div>
+    )
+  );
+}
+
+export default App;
